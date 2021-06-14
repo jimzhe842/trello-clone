@@ -14,7 +14,7 @@ const getBoards = (req, res, next) => {
 const createBoard = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
-    Board.create(req.body)
+    Board.create(req.body.board)
       .then((board) => {
         Board.find({ _id: board._id }, "title _id createdAt updatedAt").then(board => res.json({ board }))
       })
