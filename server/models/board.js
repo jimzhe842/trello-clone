@@ -1,12 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const BoardSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, 'The Board title is required']
-  }
-})
+const BoardSchema = new Schema(
+	{
+		title : {
+			type     : String,
+			required : [ true, 'The Board title is required' ]
+		},
+		// need to set type
+		lists : [
+			{
+				// type:
+				// ref:
+			}
+		]
+	},
+	{ timestamps: true }
+);
 
 const Board = mongoose.model('Board', BoardSchema);
 
