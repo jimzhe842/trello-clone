@@ -11,14 +11,14 @@ const getBoards = (req, res, next) => {
 };
 
 const getBoard = (req, res, next) => {
-	const id = req.params.id;
+	const id = req.params.id.toString();
 
-	Board.findOne({ _id: id }, 'title _id createdAt updatedAt').populate('lists').exec((err, lists) => {
+	Board.findOne({ _id: id }, 'title _id createdAt updatedAt').populate('lists').exec((err, board) => {
 		if (err) {
 			console.log(err);
 			next(new HttpError('boardId not found, please try again', 404));
 		}
-		res.json(lists);
+		res.json(board);
 	});
 };
 
