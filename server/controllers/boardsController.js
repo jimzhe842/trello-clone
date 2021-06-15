@@ -13,13 +13,17 @@ const getBoards = (req, res, next) => {
 const getBoard = (req, res, next) => {
 	const id = req.params.id.toString();
 
-	Board.findOne({ _id: id }, 'title _id createdAt updatedAt').populate('lists').exec((err, board) => {
-		if (err) {
-			console.log(err);
-			next(new HttpError('boardId not found, please try again', 404));
-		}
-		res.json(board);
-	});
+	Board.findOne({ _id: id }, 'title _id createdAt updatedAt')
+    .populate({ path: 'lists',
+      populate: { path: 'cards'}
+    })
+    .exec((err, board) => {
+      if (err) {
+        console.log(err);
+        next(new HttpError('boardId not found, please try again', 404));
+      }
+      res.json(board);
+    });
 };
 
 const createBoard = (req, res, next) => {
