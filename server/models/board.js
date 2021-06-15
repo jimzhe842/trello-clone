@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { ObjectId } = Schema.Types;
+const List = require('./list');
 
 const BoardSchema = new Schema(
 	{
@@ -7,11 +9,10 @@ const BoardSchema = new Schema(
 			type     : String,
 			required : [ true, 'The Board title is required' ]
 		},
-		// need to set type
 		lists : [
 			{
-				// type:
-				// ref:
+				type: ObjectId,
+				ref: 'List'
 			}
 		]
 	},
