@@ -1,13 +1,24 @@
 
-import React from 'react';
-import Header from './Header'
+import React, {useEffect} from 'react';
+import { useDispatch, useSelector} from "react-redux";
+import Header from './Header';
 import Lists from './Lists';
 import Sidebar from './Sidebar';
+import { getBoard } from "../../actions/BoardActions";
 
 const Board = (props) => {
    const id = props.match.params.id;  
    console.log(id)
 
+   const dispatch = useDispatch();
+
+  useEffect(() => {
+   dispatch(getBoard(id)) 
+  }, []
+  )
+
+  const singleBoard = useSelector(state => state.boards)
+console.log("single board", singleBoard)
   return (
     <>
 			<Header/>

@@ -1,15 +1,18 @@
+import { useSelector } from 'react-redux';
 import React from 'react';
 import List from './List'
 
 const Lists = () => {
+  const lists = useSelector(state => state.lists)
+  console.log("lists", lists)
     return (
         <main>
           <div id="list-container" className="list-container">
             <div id="existing-lists" className="existing-lists">
-              <List />      
+              {lists.map(list => <List {...list} key={list._id}/>)}
             </div>
           </div>
-          
+
           <div id="new-list" className="new-list">
             <span>Add a list...</span>
             <input type="text" placeholder="Add a list..." />
