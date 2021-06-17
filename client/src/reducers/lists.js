@@ -12,6 +12,9 @@ export default function lists(state = [], action) {
 
         const filteredState = state.filter(list => list.boardId !== action.board._id);
         return filteredState.concat(listsWithoutCards);
+      } case "CREATE_LIST_SUCCESS": {
+        const newList = action.list.list;
+        return state.concat(newList);
       }
       default:
         return state;
