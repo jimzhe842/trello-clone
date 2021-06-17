@@ -1,7 +1,7 @@
 import React from 'react';
 import Cards from './Cards';
 
-const List = ({title}) => {
+const List = ({title, _id}) => {
     return (
         <div className="list-wrapper">
               <div className="list-background">
@@ -20,8 +20,8 @@ const List = ({title}) => {
                     </div>
                   </div>
 
-                    <Cards /> 
-                
+                    <Cards listId={_id}/>
+
                   <div className="add-dropdown add-bottom">
                     <div className="card">
                       <div className="card-info"></div>
