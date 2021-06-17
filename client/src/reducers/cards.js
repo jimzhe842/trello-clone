@@ -2,21 +2,16 @@ export default function cards(state = [], action) {
   switch (action.type) {
 
     case "FETCH_BOARD_SUCCESS": {
-      console.log("card action", action)
-      let seen = {};
+      const {lists} = action.board;
 
-      // save existing lists to new obj
-      state.forEach((card) => {
-        seen[card._id] = card;
-      });
-      // update any new lists in the obj
-      action.board.lists.forEach(list => {
-        list.cards.forEach(card => {
-          seen[card._id] = card;
-        });
-      });
+      const cards = lists.reduce((acc, list) => {
+        const {cards} = list;
+        return acc.concat(cards);
+      }, []);
 
-      return Object.values(seen);
+      const filteredState = state.filter(card => card.boardId !== action.board._id);
+
+      return filteredState.concat(cards);
     }
     default:
       return state;

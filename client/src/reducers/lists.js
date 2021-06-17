@@ -2,19 +2,16 @@ export default function lists(state = [], action) {
     switch (action.type) {
 
       case "FETCH_BOARD_SUCCESS": {
-        console.log("list action", action)
-        let seen = {};
+        const {lists} = action.board;
 
-        // save existing lists to new obj
-        state.forEach((list) => {
-          seen[list._id] = list;
-        });
-        // update any new lists in the obj
-        action.board.lists.forEach(list => {
-          seen[list._id] = list;
+        const listsWithoutCards = lists.map((list) => {
+          const {cards, ...listWithoutCards} = list;
+          console.log(cards);
+          return listWithoutCards;
         });
 
-        return Object.values(seen);
+        const filteredState = state.filter(list => list.boardId !== action.board._id);
+        return filteredState.concat(listsWithoutCards);
       }
       default:
         return state;

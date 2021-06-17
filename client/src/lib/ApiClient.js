@@ -12,7 +12,6 @@ function logError(errorResponse) {
 }
 
 function unwrapData(response) {
-  console.log("unwrapped data", response.data)
   return response.data;
 }
 

@@ -6,7 +6,6 @@ const Cards = ({listId}) => {
     const cards = useSelector(state => state.cards).filter((card) => {
         return card.listId === listId;
     });
-    console.log("logging cards from Cards component: ", cards)
 
     return (
 

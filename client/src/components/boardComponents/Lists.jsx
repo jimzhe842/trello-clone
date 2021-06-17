@@ -2,9 +2,8 @@ import { useSelector } from 'react-redux';
 import React from 'react';
 import List from './List'
 
-const Lists = () => {
-  const lists = useSelector(state => state.lists)
-  console.log("lists", lists)
+const Lists = ({boardId}) => {
+  const lists = useSelector(state => state.lists).filter(list => list.boardId === boardId)
     return (
         <main>
           <div id="list-container" className="list-container">
@@ -25,4 +24,4 @@ const Lists = () => {
     )
 }
 
-export default Lists 
+export default Lists

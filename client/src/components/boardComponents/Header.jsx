@@ -1,10 +1,14 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const Header = () => {
+const Header = ({ boardId }) => {
+	const board = useSelector(state => state.boards).find(board => board._id === boardId)
+	const title = board ? board.title : 'loading..';
+	
 	return (
 		<header>
 			<ul>
-				<li id="title">Testing Testing</li>
+				<li id="title">{title}</li>
 				<li className="star-icon icon" />
 				<li className="private private-icon icon">Private</li>
 			</ul>
