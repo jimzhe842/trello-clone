@@ -13,7 +13,7 @@ router.post('/boards', validateBoard, boardsController.createBoard);
 
 router.post('/lists', listsController.createList, boardsController.addListToBoard, listsController.sendList);
 
-router.put('/lists/:id', listsController.updateList);
+router.put('/lists/:id', listsController.updateList, listsController.sendList);
 
 router.post('/cards', cardsController.createCard, listsController.addCardToList, cardsController.sendCard);
 

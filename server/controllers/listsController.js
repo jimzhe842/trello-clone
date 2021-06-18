@@ -37,7 +37,10 @@ const updateList = (req, res, next) => {
       title,
      }, {new: true}).then((list) => {
        console.log("list", list);
-       res.json(list);
+       req.list = list;
+       next();
+      //  res.json(list);
+      // etc
      })
      .catch((err) => next(new HttpError('Updating list failed, please try again', 500)));
   } else {

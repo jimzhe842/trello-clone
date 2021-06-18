@@ -11,12 +11,12 @@ const NewList = ({boardId}) => {
     setInputState(e.target.value);
   };
 
-  const handleToggleNew = (e) => {
+  const handleToggleNew = (e) => { // name to toggle list visibility
     e.preventDefault;
     setToggleState(!toggleState);
   };
 
-  const handleSaveNew = (e) => {
+  const handleSaveNew = (e) => { // name inputState, listTitle
     dispatch(createList({boardId, inputState}, () => { handleToggleNew(e) }));
   };
 
