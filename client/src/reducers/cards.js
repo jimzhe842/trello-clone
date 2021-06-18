@@ -9,10 +9,10 @@ export default function cards(state = [], action) {
         return acc.concat(cards);
       }, []);
 
-      // const filteredState = state.filter(card => card.boardId !== action.board._id);
+      const filteredState = state.filter(card => card.boardId !== action.board._id);
 
-      // return filteredState.concat(cards);
-      return cards;
+      return filteredState.concat(cards);
+      // return cards;
     }
     default:
       return state;

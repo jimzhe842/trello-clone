@@ -25,7 +25,8 @@ const CardSchema = new Schema(
 		completed   : Boolean,
 		boardId     : {
 			type : ObjectId,
-			ref  : 'Board'
+			ref  : 'Board',
+			required : [ true, 'The board Id is required' ]
 		}
 		// comments    : [ { type: ObjectId, ref: 'Comment' } ],
 		// actions     : []

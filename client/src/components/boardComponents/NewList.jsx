@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createList } from '../../actions/BoardActions';
+import { createList } from '../../actions/ListActions';
 import { useDispatch } from 'react-redux';
 
 const NewList = ({boardId}) => {

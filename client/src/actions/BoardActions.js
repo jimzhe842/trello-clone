@@ -25,14 +25,6 @@ export function createBoardSuccess(board) {
   return { type: types.CREATE_BOARD_SUCCESS, board: board };
 }
 
-export function createListRequest() {
-  return { type: types.CREATE_LIST_REQUEST };
-}
-
-export function createListSuccess(list) {
-  return { type: types.CREATE_LIST_SUCCESS, list: list };
-}
-
 export function fetchBoards() {
   return function(dispatch) {
     dispatch(fetchBoardsRequest());
@@ -60,16 +52,3 @@ export function getBoard(id) {
   }
 }
 
-export function createList({boardId, inputState}, callback) {
-  const newList = { boardId, list: { title: inputState }};
-  return function(dispatch) {
-    dispatch(createListRequest());
-    apiClient.createList(newList, data => {
-      dispatch(createListSuccess(data));
-
-      if (callback) {
-        callback();
-      }
-    });
-  }
-}
