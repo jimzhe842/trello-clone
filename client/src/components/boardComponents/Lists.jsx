@@ -4,7 +4,10 @@ import List from './List';
 import NewList from './NewList';
 
 const Lists = ({boardId}) => {
-  const lists = useSelector(state => state.lists).filter(list => list.boardId === boardId)
+  const lists = useSelector(state => {
+    console.log(state);
+    return state.lists
+  }).filter(list => list.boardId === boardId)
     return (
         <main>
           <div id="list-container" className="list-container">

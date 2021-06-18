@@ -26,6 +26,12 @@ const getBoard = (req, res, next) => {
     });
 };
 
+const addListToBoard = (req, res, next) => {
+  Board.findByIdAndUpdate(req.list.boardId, {
+    $addToSet: { lists: req.list._id }
+  }).then(() => next());
+}
+
 const createBoard = (req, res, next) => {
 	const errors = validationResult(req);
 	if (errors.isEmpty()) {
@@ -42,3 +48,4 @@ const createBoard = (req, res, next) => {
 exports.getBoards = getBoards;
 exports.getBoard = getBoard;
 exports.createBoard = createBoard;
+exports.addListToBoard = addListToBoard;
