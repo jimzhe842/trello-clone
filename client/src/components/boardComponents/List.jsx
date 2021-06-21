@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateList } from '../../actions/ListActions';
 import Cards from './Cards';
@@ -13,7 +13,14 @@ const List = ({title, _id, boardId}) => {
   //   setListTitle(e.target.value);
   // }
 
+  const textAreaRef = useRef(null)
 
+useEffect(() => {
+if (newCardForm) {
+  textAreaRef.current.focus();
+}
+}, [newCardForm] 
+)
 
   const handleAddCard = (e) => {
     e.preventDefault();
@@ -22,6 +29,7 @@ const List = ({title, _id, boardId}) => {
 
   // const cardDescriptionInputs = useInput("");
   const {value: cardTitle, bind: bindCardTitle, reset: resetCardTitle } = useInput("")
+
   
  const resetNewCardInputs = () => {
   setNewCardForm(false)
@@ -76,7 +84,7 @@ const List = ({title, _id, boardId}) => {
                   <div className={newCardForm ? "add-dropdown add-bottom active-card" : "add-dropdown add-bottom"}>
                     <div className="card">
                       <div className="card-info"></div>
-                      <textarea name="add-card" {...bindCardTitle}></textarea>
+                      <textarea name="add-card" {...bindCardTitle} ref={textAreaRef}></textarea>
                       <div className="members"></div>
                     </div>
                     <a className="button" onClick={handleSubmitNewCard}>Add</a>
