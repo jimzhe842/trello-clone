@@ -2,13 +2,35 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateList } from '../../actions/ListActions';
 import Cards from './Cards';
+import useInput from '../../hooks/useInput';
+import { addCard } from '../../actions/CardActions';
 
-const List = ({title, _id}) => {
+const List = ({title, _id, boardId}) => {
   const [ listTitle, setListTitle ] = useState(title);
+  const [newCardForm, setNewCardForm] = useState(false);
   const dispatch = useDispatch();
   // const handleListTitleChanged = (e) => {
   //   setListTitle(e.target.value);
   // }
+
+
+
+  const handleAddCard = (e) => {
+    e.preventDefault();
+    setNewCardForm(true);
+  }
+
+  // const cardDescriptionInputs = useInput("");
+  const {value: cardTitle, bind: bindCardTitle, reset: resetCardTitle } = useInput("")
+  
+ const resetNewCardInputs = () => {
+  setNewCardForm(false)
+  resetCardTitle();
+ } 
+  const handleSubmitNewCard = () => {
+    if (cardTitle === "") {return}
+    dispatch(addCard({_id, title: cardTitle, boardId}, resetNewCardInputs))
+  }
 
   const handleListTitleSubmit = (callback) => {
     if (listTitle === title) { return }
@@ -32,7 +54,7 @@ const List = ({title, _id}) => {
   }
   
     return (
-        <div className="list-wrapper">
+        <div className={newCardForm ? "list-wrapper add-dropdown-active" : "list-wrapper"}>
               <div className="list-background">
                 <div className="list">
                   <a className="more-icon sm-icon" href=""></a>
@@ -51,19 +73,19 @@ const List = ({title, _id}) => {
 
                     <Cards listId={_id}/>
 
-                  <div className="add-dropdown add-bottom">
+                  <div className={newCardForm ? "add-dropdown add-bottom active-card" : "add-dropdown add-bottom"}>
                     <div className="card">
                       <div className="card-info"></div>
-                      <textarea name="add-card"></textarea>
+                      <textarea name="add-card" {...bindCardTitle}></textarea>
                       <div className="members"></div>
                     </div>
-                    <a className="button">Add</a>
-                    <i className="x-icon icon"></i>
+                    <a className="button" onClick={handleSubmitNewCard}>Add</a>
+                    <i className="x-icon icon" onClick={() => {setNewCardForm(false)}}></i>
                     <div className="add-options">
                       <span>...</span>
                     </div>
                   </div>
-                  <div className="add-card-toggle" data-position="bottom">
+                  <div className="add-card-toggle" data-position="bottom" onClick={handleAddCard}>
                     Add a card...
                   </div>
                 </div>
