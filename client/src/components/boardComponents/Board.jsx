@@ -9,31 +9,30 @@ import { getBoard } from "../../actions/BoardActions";
 const Board = (props) => {
 	const path = props.location.pathname;
 	const cards = useSelector(state => state.cards)
-		console.log("cards in getBoard", cards);
+	console.log("cards", cards);
 
-	const getBoardIdFromCard = () => {
-		const cardId = props.match.params.id
-		const currentlyDisplayedCard = cards.find((card) => card._id === cardId);
-		console.log(currentlyDisplayedCard);
-		return currentlyDisplayedCard.boardId
-	}
-
-	const findBoardId = () => {
+	let id 
 		if (path.match(/\/boards\//)) {
-			return props.match.params.id
+			id = props.match.params.id
 		} else {
-			return getBoardIdFromCard()
+			console.log("in the else");
+			const cardId = props.match.params.id
+			const currentlyDisplayedCard = cards.find((card) => card._id === cardId);
+			if (currentlyDisplayedCard) {
+				id = currentlyDisplayedCard.boardId
+			}
 		}
-	}
 
-  const id = findBoardId();
   const dispatch = useDispatch();
-	console.log("props location", props);
 
   useEffect(() => {
-   dispatch(getBoard(id))
+		if (id) {
+			dispatch(getBoard(id))
+		}
   }, [id, dispatch]
   )
+
+	if (!id) { return null }
 
   return (
     <>
