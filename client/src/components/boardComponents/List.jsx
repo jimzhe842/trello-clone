@@ -40,6 +40,7 @@ if (newCardForm) {
     dispatch(addCard({_id, title: cardTitle, boardId}, resetNewCardInputs))
   }
 
+  // change to update list - handle change title and position
   const handleListTitleSubmit = (callback) => {
     if (listTitle === title) { return }
     dispatch(updateList({_id, listTitle}, callback));

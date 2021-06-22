@@ -16,7 +16,7 @@ const Board = (props) => {
   useEffect(() => {
    dispatch(getBoard(id))
    setRenderCardModal(false)
-  }, []
+  }, [id, dispatch]
   )
 
   return (
