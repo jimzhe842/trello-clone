@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import TopNav from './shared/TopNav';
 import BoardsDashboardContainer from './dashboard/BoardsDashboardContainer';
 import UISection from './ui/UISection';
@@ -15,6 +15,7 @@ import MoveCardPopover from './ui/MoveCardPopover';
 import SingleBoard from './ui/SingleBoard';
 
 import Board from './boardComponents/Board';
+import CardModal from './boardComponents/CardModal';
 
 const Application = () => {
 	return (
@@ -22,7 +23,8 @@ const Application = () => {
 			<TopNav />
 			<Route path="/" exact component={BoardsDashboardContainer} />
 
-			<Route path="/boards/:id" exact component={Board} />
+			<Route path="/(boards|cards)/:id" exact component={Board} />
+			<Route path="/cards/:id" exact component={CardModal} />
 
 			<Route path="/ui" exact component={UISection} />
 			<Route path="/ui/allBoards" component={AllBoards} />
