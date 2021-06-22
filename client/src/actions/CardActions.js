@@ -1,27 +1,41 @@
-import apiClient from "../lib/ApiClient";
-import * as types from "../constants/ActionTypes";
+import apiClient from '../lib/ApiClient';
+import * as types from '../constants/ActionTypes';
 
 export function addNewCardRequest() {
-    return { type: types.CREATE_CARD_REQUEST };
-} 
+	return { type: types.CREATE_CARD_REQUEST };
+}
 
 export function createCardSuccess(card) {
-    return { type: types.CREATE_CARD_SUCCESS, card: card };
-} 
+	return { type: types.CREATE_CARD_SUCCESS, card: card };
+}
 
+export function fetchCardRequest() {
+	return { type: types.FETCH_CARD_REQUEST };
+}
 
-export function addCard({_id, title, boardId}, callback) {
-    const newCard = {listId: _id, card: {title}, boardId};
-    return function(dispatch) {
-        dispatch(addNewCardRequest());
-        apiClient.createCard(newCard, data => {
-            dispatch(createCardSuccess(data));
+export function fetchCardSuccess(card) {
+	return { type: types.FETCH_CARD_SUCCESS, card: card };
+}
 
-            if (callback) {
-                callback()
-            }
-        });
-    }
+export function addCard({ _id, title, boardId }, callback) {
+	const newCard = { listId: _id, card: { title }, boardId };
+	return function(dispatch) {
+		dispatch(addNewCardRequest());
+		apiClient.createCard(newCard, (data) => {
+			dispatch(createCardSuccess(data));
+
+			if (callback) {
+				callback();
+			}
+		});
+	};
+}
+
+export function getCard(id) {
+	return function(dispatch) {
+		dispatch(fetchCardRequest(id));
+		apiClient.getCard(id, (data) => dispatch(fetchCardSuccess(data)));
+	};
 }
 
 /*
