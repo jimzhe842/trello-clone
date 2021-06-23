@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCard, updateCard } from '../../actions/CardActions';
@@ -8,6 +8,8 @@ const CardModal = (props) => {
 	const dispatch = useDispatch();
   const [ cardDescription, setCardDescription ] = useState('');
 	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
+  const [ cardTitle, setCardTitle ] = useState('');
+	const titleAreaRef = useRef(null)
 
 	const card = useSelector(state => state.cards).find(card => card._id === id);
 	const lists = useSelector(state => state.lists);
@@ -15,7 +17,8 @@ const CardModal = (props) => {
 	useEffect(
 		() => {
 			if (card) {
-			  setCardDescription(card.description)
+			  setCardDescription(card.description);
+				setCardTitle(card.title);
 			} else {
 				dispatch(getCard(id));
 			}
@@ -27,9 +30,9 @@ const CardModal = (props) => {
 	const paragraphDescription = <p className="textarea-overlay">{cardDescription}</p>
 	const descriptionTextBox = <textarea className="textarea-toggle" onChange={(e) => { setCardDescription(e.target.value) }} value={cardDescription}>{cardDescription}</textarea>
 
-	const handleEditCard = (attributeName, attributeValue) => {
+	const handleEditCard = (attributeName, attributeValue, callback) => {
 		const updatedCardData = {card: { [attributeName]: attributeValue }}
-		dispatch(updateCard(card._id, updatedCardData, () => setEditingCardDescription(false)))
+		dispatch(updateCard(card._id, updatedCardData, callback));
 	};
 
 	const getListTitle = () => {
@@ -37,6 +40,24 @@ const CardModal = (props) => {
 		const list = lists.find(list => list._id === listId);
 		return list ? list.title : '';
 	};
+
+	const handleCardTitleSubmit = (e) => {
+		handleEditCard('title', cardTitle, () => titleAreaRef.current.blur());
+  }
+
+  const handleCardTitleBlur = (e) => {
+    e.preventDefault();
+    handleCardTitleSubmit(e);
+  }
+
+  const handleCardTitleKeyDown = (e) => {
+    if (e.key === "Enter") {
+			//titleAreaRef.current.blur();
+      handleCardTitleSubmit(e);
+    } else {
+      setCardTitle(e.target.value);
+    }
+  }
 
 	if (!card) { return null; }
 	return (
@@ -50,7 +71,8 @@ const CardModal = (props) => {
 				</Link>
 				<header>
 					<i className="card-icon icon .close-modal" />
-					<textarea className="list-title" style={{ height: '45px' }} defaultValue={card.title}>
+					<textarea ref={titleAreaRef} className="list-title" style={{ height: '45px' }} defaultValue={cardTitle}
+						onChange={handleCardTitleKeyDown} onKeyDown={handleCardTitleKeyDown} onBlur={handleCardTitleBlur}>
 					</textarea>
 					<p>
 						in list <a className="link">{getListTitle()}</a>
@@ -100,7 +122,7 @@ const CardModal = (props) => {
 								</span>
 								{ editingCardDescription ? descriptionTextBox : paragraphDescription }
 								<div className={editingCardDescription ? "" : "hidden" }>
-									<div className="button" value="Save" onClick={() => handleEditCard('description', cardDescription)}>Save</div>
+									<div className="button" value="Save" onClick={() => handleEditCard('description', cardDescription, () => setEditingCardDescription(false))}>Save</div>
 									<i className="x-icon icon" onClick={() => setEditingCardDescription(false)}></i>
 								</div>
 								<p id="description-edit-options" className="hidden">
