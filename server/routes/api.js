@@ -19,4 +19,6 @@ router.post('/cards', cardsController.createCard, listsController.addCardToList,
 
 router.get('/cards/:id', cardsController.getCard, cardsController.sendCard);
 
+router.put('/cards/:id', cardsController.updateCard, cardsController.sendCard);
+
 module.exports = router;

@@ -49,27 +49,27 @@ function getCard (req, res, next) {
     console.log(errors);
 		return next(new HttpError('Error getting the card.', 404));
   }
-  
+}
+
+const updateCard = (req, res, next) => {
+  const id = req.params.id;
+  const card = req.body.card;
+  const errors = validationResult(req);
+
+  if (errors.isEmpty()) {
+    Card.findByIdAndUpdate(id, card, {new: true}).then((card) => {
+       req.card = card;
+       next();
+     })
+     .catch((err) => next(new HttpError('Updating card failed, please try again', 500)));
+  } else {
+    console.log(errors);
+		return next(new HttpError('The input field is empty.', 404));
+  }
+
 }
 
 exports.createCard = createCard;
 exports.sendCard = sendCard;
 exports.getCard = getCard;
-
-/*
-const getBoard = (req, res, next) => {
-	const id = req.params.id.toString();
-
-	Board.findOne({ _id: id }, 'title _id createdAt updatedAt')
-    .populate({ path: 'lists',
-      populate: { path: 'cards'}
-    })
-    .exec((err, board) => {
-      if (err) {
-        console.log(err);
-        next(new HttpError('boardId not found, please try again', 404));
-      }
-      res.json(board);
-    });
-};
-  */
+exports.updateCard = updateCard;

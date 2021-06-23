@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCard } from '../../actions/CardActions';
+import { getCard, updateCard } from '../../actions/CardActions';
 
 const CardModal = (props) => {
 	const id = props.match.params.id;
 	const dispatch = useDispatch();
-	const card = useSelector(state => state.cards).find(card => card._id === id);
+	let card;
   const [ cardDescription, setCardDescription ] = useState('');
 	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
 
+	card = useSelector(state => state.cards).find(card => card._id === id);
+
 	useEffect(
 		() => {
-			dispatch(getCard(id));
 			if (card) {
 			 setCardDescription(card.description)
+			} else {
+				dispatch(getCard(id));
 			}
 		},
-		[ id, dispatch ]
+		[ id, dispatch, card ]
 	);
 
-	const paragraphDescription = <p className="textarea-overlay">{cardDescription ? cardDescription : "No description."}</p>
+	const paragraphDescription = <p className="textarea-overlay">{cardDescription}</p>
 	const descriptionTextBox = <textarea className="textarea-toggle" onChange={(e) => { setCardDescription(e.target.value) }} value={cardDescription}>{cardDescription}</textarea>
 
-	const handleEditCardDescription = () => {
-		// dispatch the cardDescription
+	const handleEditCard = (attributeName, attributeValue) => {
+		const updatedCardData = {card: { [attributeName]: attributeValue }}
+		dispatch(updateCard(card._id, updatedCardData, () => setEditingCardDescription(false)))
 	};
 
 	if (!card) { return null; }
@@ -89,7 +93,7 @@ const CardModal = (props) => {
 								</span>
 								{ editingCardDescription ? descriptionTextBox : paragraphDescription }
 								<div className={editingCardDescription ? "" : "hidden" }>
-									<div className="button" value="Save" onClick={handleEditCardDescription}>Save</div>
+									<div className="button" value="Save" onClick={() => handleEditCard('description', cardDescription)}>Save</div>
 									<i className="x-icon icon" onClick={() => setEditingCardDescription(false)}></i>
 								</div>
 								<p id="description-edit-options" className="hidden">

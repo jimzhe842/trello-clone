@@ -32,9 +32,7 @@ export function addCard({ _id, title, boardId }, callback) {
 		apiClient.createCard(newCard, (data) => {
 			dispatch(createCardSuccess(data));
 
-			if (callback) {
-				callback();
-			}
+			if (callback) callback();
 		});
 	};
 }
@@ -46,13 +44,32 @@ export function getCard(id) {
 	};
 }
 
-export function updateCard(card, callback) {
+export function updateCard(id, cardData, callback) {
   return function(dispatch) {
     dispatch(updateCardRequest());
-    apiClient.updateCard(card, data => {
+    apiClient.updateCard(id, cardData, data => {
       dispatch(updateCardSuccess(data));
 
-      if (callback) { callback(); }
+      if (callback) callback();
     });
   }
 }
+
+// Example payload:
+// {
+//   "card": {
+//     "title": "My updated title",
+//     "completed": true
+//   }
+// }
+// At least one attribute must be included in a "card"object in the payload.
+// The allowed attributes are:
+
+// title
+// listId
+// position
+// description
+// archived
+// dueDate
+// completed
+// labels

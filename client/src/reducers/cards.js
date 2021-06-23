@@ -11,7 +11,6 @@ export default function cards(state = [], action) {
 			const filteredState = state.filter((card) => card.boardId !== action.board._id);
 
 			return filteredState.concat(cards);
-			// return cards;
 		}
 		case 'CREATE_CARD_SUCCESS': {
 			const newCard = action.card;
@@ -28,7 +27,14 @@ export default function cards(state = [], action) {
 			} else {
 				return state.concat(fetchedCard);
 			}
-		}
+		} case 'UPDATE_CARD_SUCCESS': {
+      const updatedCard = action.card;
+      const updatedState = state.map((card) => {
+        return card._id === updatedCard._id ? updatedCard : {...card};
+      });
+
+      return updatedState
+    }
 		default:
 			return state;
 	}
