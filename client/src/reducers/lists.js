@@ -6,6 +6,7 @@ export default function lists(state = [], action) {
 
         const listsWithoutCards = lists.map((list) => {
           const {cards, ...listWithoutCards} = list;
+          console.log(cards);
           return listWithoutCards;
         });
 

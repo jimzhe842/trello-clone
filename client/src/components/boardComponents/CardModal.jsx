@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCard, updateCard } from '../../actions/CardActions';
@@ -9,7 +9,7 @@ const CardModal = (props) => {
   const [ cardDescription, setCardDescription ] = useState('');
 	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
   const [ cardTitle, setCardTitle ] = useState('');
-	const titleAreaRef = useRef(null)
+	// const titleAreaRef = useRef(null)
 
 	const card = useSelector(state => state.cards).find(card => card._id === id);
 	const lists = useSelector(state => state.lists);
@@ -17,7 +17,7 @@ const CardModal = (props) => {
 	useEffect(
 		() => {
 			if (card) {
-			  setCardDescription(card.description);
+				setCardDescription(card.description);
 				setCardTitle(card.title);
 			} else {
 				dispatch(getCard(id));
@@ -41,8 +41,8 @@ const CardModal = (props) => {
 		return list ? list.title : '';
 	};
 
-	const handleCardTitleSubmit = (e) => {
-		handleEditCard('title', cardTitle, () => titleAreaRef.current.blur());
+	const handleCardTitleSubmit = (callback) => {
+		handleEditCard('title', cardTitle, callback);
   }
 
   const handleCardTitleBlur = (e) => {
@@ -53,7 +53,8 @@ const CardModal = (props) => {
   const handleCardTitleKeyDown = (e) => {
     if (e.key === "Enter") {
 			//titleAreaRef.current.blur();
-      handleCardTitleSubmit(e);
+			const currentTarget = e.currentTarget;
+      handleCardTitleSubmit(() => currentTarget.blur());
     } else {
       setCardTitle(e.target.value);
     }
@@ -71,7 +72,7 @@ const CardModal = (props) => {
 				</Link>
 				<header>
 					<i className="card-icon icon .close-modal" />
-					<textarea ref={titleAreaRef} className="list-title" style={{ height: '45px' }} defaultValue={cardTitle}
+					<textarea className="list-title" style={{ height: '45px' }} defaultValue={cardTitle}
 						onChange={handleCardTitleKeyDown} onKeyDown={handleCardTitleKeyDown} onBlur={handleCardTitleBlur}>
 					</textarea>
 					<p>
