@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCard } from '../../actions/CardActions';
@@ -7,13 +7,25 @@ const CardModal = (props) => {
 	const id = props.match.params.id;
 	const dispatch = useDispatch();
 	const card = useSelector(state => state.cards).find(card => card._id === id);
+  const [ cardDescription, setCardDescription ] = useState('');
+	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
 
 	useEffect(
 		() => {
 			dispatch(getCard(id));
+			if (card) {
+			 setCardDescription(card.description)
+			}
 		},
 		[ id, dispatch ]
 	);
+
+	const paragraphDescription = <p className="textarea-overlay">{cardDescription ? cardDescription : "No description."}</p>
+	const descriptionTextBox = <textarea className="textarea-toggle" onChange={(e) => { setCardDescription(e.target.value) }} value={cardDescription}>{cardDescription}</textarea>
+
+	const handleEditCardDescription = () => {
+		// dispatch the cardDescription
+	};
 
 	if (!card) { return null; }
 	return (
@@ -66,17 +78,21 @@ const CardModal = (props) => {
 								<li className="due-date-section">
 									<h3>Due Date</h3>
 									<div id="dueDateDisplay" className="overdue completed">
-										<input id="dueDateCheckbox" type="checkbox" className="checkbox" checked="" />
+										<input id="dueDateCheckbox" type="checkbox" className="checkbox" checked={false} />
 										Aug 4 at 10:42 AM <span>(past due)</span>
 									</div>
 								</li>
 							</ul>
 							<form className="description">
-								<p>{card.description}</p>
-								<span id="description-edit" className="link">
+								<p>Description</p>
+								<span id="description-edit" className="link" onClick={() => { setEditingCardDescription(true)}}>
 									Edit
 								</span>
-								<p className="textarea-overlay">Cards have a symbol to indicate if they contain a description.</p>
+								{ editingCardDescription ? descriptionTextBox : paragraphDescription }
+								<div className={editingCardDescription ? "" : "hidden" }>
+									<div className="button" value="Save" onClick={handleEditCardDescription}>Save</div>
+									<i className="x-icon icon" onClick={() => setEditingCardDescription(false)}></i>
+								</div>
 								<p id="description-edit-options" className="hidden">
 									You have unsaved edits on this field. <span className="link">View edits</span> -{' '}
 									<span className="link">Discard</span>
@@ -162,7 +178,7 @@ const CardModal = (props) => {
 									</small>
 									<div className="comment">
 										<label>
-											<textarea required="" rows="1">
+											<textarea required="" rows="1" value="">
 												Example of a comment.
 											</textarea>
 											<div>

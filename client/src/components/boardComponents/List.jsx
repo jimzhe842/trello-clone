@@ -9,17 +9,13 @@ const List = ({title, _id, boardId}) => {
   const [ listTitle, setListTitle ] = useState(title);
   const [newCardForm, setNewCardForm] = useState(false);
   const dispatch = useDispatch();
-  // const handleListTitleChanged = (e) => {
-  //   setListTitle(e.target.value);
-  // }
-
   const textAreaRef = useRef(null)
 
 useEffect(() => {
 if (newCardForm) {
   textAreaRef.current.focus();
 }
-}, [newCardForm] 
+}, [newCardForm]
 )
 
   const handleAddCard = (e) => {
@@ -27,14 +23,13 @@ if (newCardForm) {
     setNewCardForm(true);
   }
 
-  // const cardDescriptionInputs = useInput("");
   const {value: cardTitle, bind: bindCardTitle, reset: resetCardTitle } = useInput("")
 
-  
+
  const resetNewCardInputs = () => {
   setNewCardForm(false)
   resetCardTitle();
- } 
+ }
   const handleSubmitNewCard = () => {
     if (cardTitle === "") {return}
     dispatch(addCard({_id, title: cardTitle, boardId}, resetNewCardInputs))
@@ -61,7 +56,7 @@ if (newCardForm) {
       setListTitle(e.target.value);
     }
   }
-  
+
     return (
         <div className={newCardForm ? "list-wrapper add-dropdown-active" : "list-wrapper"}>
               <div className="list-background">

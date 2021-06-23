@@ -1,4 +1,3 @@
-
 import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Header from './Header';
@@ -11,11 +10,10 @@ const Board = (props) => {
 	const cards = useSelector(state => state.cards)
 	console.log("cards", cards);
 
-	let id 
+	let id
 		if (path.match(/\/boards\//)) {
 			id = props.match.params.id
 		} else {
-			console.log("in the else");
 			const cardId = props.match.params.id
 			const currentlyDisplayedCard = cards.find((card) => card._id === cardId);
 			if (currentlyDisplayedCard) {
