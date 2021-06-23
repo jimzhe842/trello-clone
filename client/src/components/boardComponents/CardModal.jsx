@@ -13,6 +13,7 @@ const CardModal = (props) => {
 		[ id, dispatch ]
 	);
 
+	// if no card in state yet, return null
 	return (
 		<div id="modal-container">
 			<div className="screen" />
