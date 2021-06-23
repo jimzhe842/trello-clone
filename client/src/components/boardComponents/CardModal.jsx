@@ -39,8 +39,7 @@ const CardModal = (props) => {
 				</Link>
 				<header>
 					<i className="card-icon icon .close-modal" />
-					<textarea className="list-title" style={{ height: '45px' }}>
-						{card.title}
+					<textarea className="list-title" style={{ height: '45px' }} defaultValue={card.title}>
 					</textarea>
 					<p>
 						in list <a className="link">Stuff to try (this is a list)</a>
@@ -78,7 +77,7 @@ const CardModal = (props) => {
 								<li className="due-date-section">
 									<h3>Due Date</h3>
 									<div id="dueDateDisplay" className="overdue completed">
-										<input id="dueDateCheckbox" type="checkbox" className="checkbox" checked={false} />
+										<input id="dueDateCheckbox" type="checkbox" className="checkbox" defaultChecked={false} />
 										Aug 4 at 10:42 AM <span>(past due)</span>
 									</div>
 								</li>
@@ -107,7 +106,7 @@ const CardModal = (props) => {
 								</div>
 								<div className="comment">
 									<label>
-										<textarea required="" rows="1" placeholder="Write a comment..." />
+										<textarea required="" rows="1" defaultValue= "Write a comment..." placeholder="Write a comment..." />
 										<div>
 											<a className="light-button card-icon sm-icon" />
 											<a className="light-button smiley-icon sm-icon" />
@@ -140,8 +139,7 @@ const CardModal = (props) => {
 									</small>
 									<div className="comment">
 										<label>
-											<textarea required="" rows="1">
-												The activities have not been implemented yet.
+											<textarea required="" rows="1" defaultValue="The activities have not been implemented yet.">
 											</textarea>
 											<div>
 												<a className="light-button card-icon sm-icon" />
@@ -178,8 +176,7 @@ const CardModal = (props) => {
 									</small>
 									<div className="comment">
 										<label>
-											<textarea required="" rows="1" value="">
-												Example of a comment.
+											<textarea required="" rows="1" defaultValue="Example of a comment.">
 											</textarea>
 											<div>
 												<a className="light-button card-icon sm-icon" />

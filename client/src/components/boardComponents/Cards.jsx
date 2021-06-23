@@ -7,7 +7,6 @@ const Cards = ({ listId }) => {
 		return card.listId === listId;
 	});
 
-	console.log(cards);
 	return (
 		<div id="cards-container" data-id="list-2-cards">
 			{cards.map((card) => {

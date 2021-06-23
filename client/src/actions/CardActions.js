@@ -17,6 +17,14 @@ export function fetchCardSuccess(card) {
 	return { type: types.FETCH_CARD_SUCCESS, card: card };
 }
 
+export function updateCardRequest() {
+  return { type: types.UPDATE_CARD_REQUEST };
+}
+
+export function updateCardSuccess(card) {
+  return { type: types.UPDATE_CARD_SUCCESS, card: card };
+}
+
 export function addCard({ _id, title, boardId }, callback) {
 	const newCard = { listId: _id, card: { title }, boardId };
 	return function(dispatch) {
@@ -38,48 +46,13 @@ export function getCard(id) {
 	};
 }
 
-/*
-    export function createListRequest() {
-  return { type: types.CREATE_LIST_REQUEST };
-}
-
-export function createListSuccess(list) {
-  return { type: types.CREATE_LIST_SUCCESS, list: list };
-}
-
-export function updateListRequest() {
-  return { type: types.UPDATE_LIST_REQUEST };
-}
-
-export function updateListSuccess(list) {
-  return { type: types.UPDATE_LIST_SUCCESS, list: list };
-}
-
-export function createList({boardId, inputState}, callback) {
-  const newList = { boardId, list: { title: inputState }};
+export function updateCard(card, callback) {
   return function(dispatch) {
-    dispatch(createListRequest());
-    apiClient.createList(newList, data => {
-      dispatch(createListSuccess(data));
+    dispatch(updateCardRequest());
+    apiClient.updateCard(card, data => {
+      dispatch(updateCardSuccess(data));
 
-      if (callback) {
-        callback();
-      }
+      if (callback) { callback(); }
     });
   }
 }
-
-export function updateList({_id, listTitle, position}, callback) {
-  const updatedInfo = {_id, title: listTitle, position};
-  return function(dispatch) {
-    dispatch(updateListRequest());
-    apiClient.updateList(updatedInfo, data => {
-      dispatch(updateListSuccess(data));
-
-      if (callback) {
-        callback();
-      }
-    })
-  }
-}
-*/

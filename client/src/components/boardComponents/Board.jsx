@@ -8,34 +8,33 @@ import { getBoard } from "../../actions/BoardActions";
 const Board = (props) => {
 	const path = props.location.pathname;
 	const cards = useSelector(state => state.cards)
-	console.log("cards", cards);
 
-	let id
+	let boardId
 		if (path.match(/\/boards\//)) {
-			id = props.match.params.id
+			boardId = props.match.params.id
 		} else {
 			const cardId = props.match.params.id
 			const currentlyDisplayedCard = cards.find((card) => card._id === cardId);
 			if (currentlyDisplayedCard) {
-				id = currentlyDisplayedCard.boardId
+				boardId = currentlyDisplayedCard.boardId
 			}
 		}
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-		if (id) {
-			dispatch(getBoard(id))
+		if (boardId) {
+			dispatch(getBoard(boardId))
 		}
-  }, [id, dispatch]
+  }, [boardId, dispatch]
   )
 
-	if (!id) { return null }
+	if (!boardId) { return null }
 
   return (
     <>
-			<Header boardId={id} />
-      <Lists boardId={id} />
+			<Header boardId={boardId} />
+      <Lists boardId={boardId} />
       <Sidebar />
     </>
   );
