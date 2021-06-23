@@ -6,21 +6,22 @@ import { getCard, updateCard } from '../../actions/CardActions';
 const CardModal = (props) => {
 	const id = props.match.params.id;
 	const dispatch = useDispatch();
-	let card;
   const [ cardDescription, setCardDescription ] = useState('');
 	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
 
-	card = useSelector(state => state.cards).find(card => card._id === id);
+	const card = useSelector(state => state.cards).find(card => card._id === id);
+	const lists = useSelector(state => state.lists);
 
 	useEffect(
 		() => {
 			if (card) {
-			 setCardDescription(card.description)
+			  setCardDescription(card.description)
 			} else {
 				dispatch(getCard(id));
 			}
 		},
-		[ id, dispatch, card ]
+
+		[ id, dispatch, card, lists ]
 	);
 
 	const paragraphDescription = <p className="textarea-overlay">{cardDescription}</p>
@@ -29,6 +30,12 @@ const CardModal = (props) => {
 	const handleEditCard = (attributeName, attributeValue) => {
 		const updatedCardData = {card: { [attributeName]: attributeValue }}
 		dispatch(updateCard(card._id, updatedCardData, () => setEditingCardDescription(false)))
+	};
+
+	const getListTitle = () => {
+		const listId = card.listId;
+		const list = lists.find(list => list._id === listId);
+		return list ? list.title : '';
 	};
 
 	if (!card) { return null; }
@@ -46,7 +53,7 @@ const CardModal = (props) => {
 					<textarea className="list-title" style={{ height: '45px' }} defaultValue={card.title}>
 					</textarea>
 					<p>
-						in list <a className="link">Stuff to try (this is a list)</a>
+						in list <a className="link">{getListTitle()}</a>
 						<i className="sub-icon sm-icon" />
 					</p>
 				</header>
