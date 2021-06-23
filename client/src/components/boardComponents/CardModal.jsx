@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCard } from '../../actions/CardActions';
 
 const CardModal = (props) => {
 	const id = props.match.params.id;
 	const dispatch = useDispatch();
+	const card = useSelector(state => state.cards).find(card => card._id === id);
 
 	useEffect(
 		() => {
@@ -13,16 +15,20 @@ const CardModal = (props) => {
 		[ id, dispatch ]
 	);
 
-	// if no card in state yet, return null
+	if (!card) { return null; }
 	return (
 		<div id="modal-container">
-			<div className="screen" />
+			<Link to={`/boards/${card.boardId}`}>
+				<div className="screen" />
+			</Link>
 			<div id="modal">
-				<i className="x-icon icon close-modal" />
+				<Link to={`/boards/${card.boardId}`}>
+					<i className="x-icon icon close-modal" />
+				</Link>
 				<header>
 					<i className="card-icon icon .close-modal" />
 					<textarea className="list-title" style={{ height: '45px' }}>
-						Cards do many cool things. Click on this card to open it and learn more...
+						{card.title}
 					</textarea>
 					<p>
 						in list <a className="link">Stuff to try (this is a list)</a>
@@ -66,7 +72,7 @@ const CardModal = (props) => {
 								</li>
 							</ul>
 							<form className="description">
-								<p>Description</p>
+								<p>{card.description}</p>
 								<span id="description-edit" className="link">
 									Edit
 								</span>
