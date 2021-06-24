@@ -21,7 +21,13 @@ router.post('/cards', cardsController.createCard, listsController.addCardToList,
 router.get('/cards/:id', cardsController.getCard, cardsController.sendCard);
 
 router.put('/cards/:id', cardsController.updateCard, cardsController.sendCard);
-
+// finding card, creating actions, updating card, sending card
+// modularize finding the card from update card
+// figure out what things create an action (changing description)
+  // changing description checking if description changed
+  // if true then add a new action
 router.post('/comments', commentsController.createComment, cardsController.addCommentToCard, commentsController.sendComment);
+
+// router.post('/api/cards/:id', actionsController.createAction)
 
 module.exports = router;

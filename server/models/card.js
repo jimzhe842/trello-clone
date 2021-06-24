@@ -36,8 +36,7 @@ const CardSchema = new Schema(
 			required : [ true, 'The board Id is required' ]
 		},
 		comments    : [ { type: ObjectId, ref: 'Comment' } ],
-		// actions     : []
-		// virtual property for comments count
+		actions     : [ { type: ObjectId, ref: 'Action' }]
 	},
 	options
 );

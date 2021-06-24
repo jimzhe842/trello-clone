@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCard, updateCard } from '../../actions/CardActions';
+import useInput from '../../hooks/useInput';
+import { addComment } from '../../actions/CommentActions';
 
 const CardModal = (props) => {
 	const id = props.match.params.id;
@@ -9,6 +11,7 @@ const CardModal = (props) => {
   const [ cardDescription, setCardDescription ] = useState('');
 	const [ editingCardDescription, setEditingCardDescription ] = useState(false);
   const [ cardTitle, setCardTitle ] = useState('');
+	const {value: comment, bind: bindComment, reset: resetComment } = useInput("")
 	// const titleAreaRef = useRef(null)
 
 	const card = useSelector(state => state.cards).find(card => card._id === id);
@@ -59,6 +62,14 @@ const CardModal = (props) => {
       setCardTitle(e.target.value);
     }
   }
+
+	const handleAddComment = (e) => {
+		e.preventDefault();
+		if (comment === "") {
+			return;
+		}
+		dispatch(addComment({comment, cardId: id}, resetComment));
+	}
 
 	if (!card) { return null; }
 	return (
@@ -140,7 +151,9 @@ const CardModal = (props) => {
 								</div>
 								<div className="comment">
 									<label>
-										<textarea required="" rows="1" defaultValue= "Write a comment..." placeholder="Write a comment..." />
+										<textarea required="" rows="1" {...bindComment} 
+											placeholder="Write a comment..."
+										/>
 										<div>
 											<a className="light-button card-icon sm-icon" />
 											<a className="light-button smiley-icon sm-icon" />
@@ -148,7 +161,8 @@ const CardModal = (props) => {
 											<a className="light-button attachment-icon sm-icon" />
 										</div>
 										<div>
-											<input type="submit" className="button not-implemented" value="Save" />
+											<input type="submit" className="button" value="Save" 
+												onClick={handleAddComment} />
 										</div>
 									</label>
 								</div>
