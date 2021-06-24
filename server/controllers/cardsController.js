@@ -43,8 +43,9 @@ function getCard (req, res, next) {
   if (errors.isEmpty()) {
     Card.findById(id, (err, card) => {
       req.card = card;
-      next();
-    })
+    }).populate({ path: 'comments' })
+    .populate('commentsCount')
+    .then(() => next());
   } else {
     console.log(errors);
 		return next(new HttpError('Error getting the card.', 404));
@@ -69,7 +70,18 @@ const updateCard = (req, res, next) => {
 
 }
 
+
+
+function addCommentToCard(req, res, next) {
+  Card.findByIdAndUpdate(req.comment.cardId, {
+    $addToSet: { comments: req.comment._id }
+  }).then(() => next());
+}
+
+
+
 exports.createCard = createCard;
 exports.sendCard = sendCard;
 exports.getCard = getCard;
 exports.updateCard = updateCard;
+exports.addCommentToCard = addCommentToCard;

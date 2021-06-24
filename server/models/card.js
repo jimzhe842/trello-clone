@@ -3,6 +3,13 @@ const Schema = mongoose.Schema;
 
 const { ObjectId } = Schema.Types;
 
+const options = {
+	timestamps : true,
+	toJSON: {
+		virtuals: true
+	}
+}
+
 const CardSchema = new Schema(
 	{
 		title       : {
@@ -27,15 +34,21 @@ const CardSchema = new Schema(
 			type : ObjectId,
 			ref  : 'Board',
 			required : [ true, 'The board Id is required' ]
-		}
-		// comments    : [ { type: ObjectId, ref: 'Comment' } ],
+		},
+		comments    : [ { type: ObjectId, ref: 'Comment' } ],
 		// actions     : []
 		// virtual property for comments count
 	},
-	{
-		timestamps : true
-	}
+	options
 );
+
+CardSchema.virtual('commentsCount', {
+	ref: 'Card',
+	localField: '_id',
+	foreignField: 'cardId',
+}).get(function() {
+	return this.comments.length;
+});
 
 const Card = mongoose.model('Card', CardSchema);
 
