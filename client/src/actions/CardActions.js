@@ -49,7 +49,6 @@ export function updateCard(id, cardData, callback) {
     dispatch(updateCardRequest());
     apiClient.updateCard(id, cardData, data => {
       dispatch(updateCardSuccess(data));
-
       if (callback) callback();
     });
   }
