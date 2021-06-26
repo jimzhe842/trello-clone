@@ -62,7 +62,7 @@ const updateCard = (req, res, next) => {
     Card.findByIdAndUpdate(id, card, {new: true}).then((card) => {
        req.card = card;
        // publish message to nats
-       publish(`Card was updated. New data: ${card}`)
+       // publish(`Card was updated. New data: ${card}`)
        next();
      })
      .catch((err) => next(new HttpError('Updating card failed, please try again', 500)));

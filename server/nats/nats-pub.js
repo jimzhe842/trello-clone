@@ -1,4 +1,4 @@
-const { connect, StringCodec } = require("nats");
+// const { connect, StringCodec } = require("nats");
 
 async function publish(msg) {
   // to create a connection to a nats-server:
