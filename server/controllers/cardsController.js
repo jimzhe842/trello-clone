@@ -61,7 +61,7 @@ const updateCard = (req, res, next) => {
   if (errors.isEmpty()) {
     Card.findByIdAndUpdate(id, card, {new: true}).then((card) => {
        req.card = card;
-       publish(`card updated. new data: ${card}`);
+       publish(JSON.stringify(card));
        next();
      })
      .catch((err) => next(new HttpError('Updating card failed, please try again', 500)));
