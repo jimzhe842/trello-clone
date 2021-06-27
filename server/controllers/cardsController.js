@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const HttpError = require('../models/httpError');
 const { validationResult } = require('express-validator');
 const Board = require('../models/board');
+const publish = require("../lib/nats-pub");
 
 
 function createCard(req, res, next) {
@@ -60,6 +61,7 @@ const updateCard = (req, res, next) => {
   if (errors.isEmpty()) {
     Card.findByIdAndUpdate(id, card, {new: true}).then((card) => {
        req.card = card;
+       publish(`card updated. new data: ${card}`);
        next();
      })
      .catch((err) => next(new HttpError('Updating card failed, please try again', 500)));
