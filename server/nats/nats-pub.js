@@ -1,8 +1,8 @@
-// const { connect, StringCodec } = require("nats");
+const { connect, StringCodec } = require("nats");
 
 async function publish(msg) {
   // to create a connection to a nats-server:
-  const nc = await connect({ servers: "demo.nats.io:4222" });
+  const nc = await connect({ servers: "nats://nats:4222" });
 
   // create a codec
   const sc = StringCodec();
