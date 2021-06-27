@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  nats:
+    image: 'nats:latest'
+    restart: always
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    hostname: nats-server
+  dummy:
+    build:
+      context: /Users/lauradavies/dummy_express
+      dockerfile: /Users/lauradavies/dummy_express/Dockerfile
+    ports:
+      - "3030:3030"
+    environment:
+      - NATS_URI=nats://nats:4222
+    depends_on: 
+      - nats
+  backend:
+    env_file:
+        "/Users/lauradavies/trello-clone/server/.env"
+    build:
+      context: /Users/lauradavies/trello-clone/server
+      dockerfile: /Users/lauradavies/trello-clone/server/Dockerfile
+    image: "ljdavies/jazzy-cart-backend"
+    environment:
+      - "NATS_URI=nats://nats:4222"
+    depends_on: 
+      - nats
+    ports:
+      - "5000:5000"
+  frontend:
+    build:
+      context: /Users/lauradavies/trello-clone/client
+      dockerfile: /Users/lauradavies/trello-clone/client/Dockerfile
+    image: "ljdavies/jazzy-cart-frontend"
+    environment:
+      - "NATS_URI=nats://nats:4222"
+    depends_on: 
+      - nats
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    links:
+      - "backend:be"
